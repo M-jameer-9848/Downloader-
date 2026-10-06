@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050805">
+<title>HACKER KING // MEDIA DOWNLOADER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00ff66;--g2:#0aff8a;--bg:#020402;--panel:#061008;--line:#123c21;--muted:#72a985;--danger:#ff4d6d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,#0a2b14 0,#030603 38%,#010201 100%);color:#d9ffe4;font-family:"Share Tech Mono",monospace;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.09;background:repeating-linear-gradient(0deg,transparent 0 3px,#00ff66 4px),linear-gradient(90deg,transparent 49.8%,#00ff66 50%,transparent 50.2%);mix-blend-mode:screen}
+.wrap{width:min(1050px,92%);margin:auto;padding:26px 0 40px}
+header{text-align:center}.avatar{width:132px;height:132px;border:2px solid var(--g);border-radius:50%;padding:5px;box-shadow:0 0 12px #00ff6680,0 0 45px #00ff6625;margin:0 auto 14px;background:#020702}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+h1{font:800 clamp(24px,6vw,44px) Orbitron,sans-serif;letter-spacing:4px;margin:0;color:#fff;text-shadow:0 0 10px #00ff66}
+.sub{color:var(--g);margin:8px 0 22px;font-size:13px}
+.clock{border:1px solid var(--g);background:#030803;box-shadow:0 0 20px #00ff6618,inset 0 0 25px #00ff6608;padding:15px;position:relative;margin-bottom:28px}
+.clock:before,.clock:after{content:"";position:absolute;width:12px;height:12px;border-color:var(--g);border-style:solid}.clock:before{left:-1px;top:-1px;border-width:2px 0 0 2px}.clock:after{right:-1px;bottom:-1px;border-width:0 2px 2px 0}
+.clock .time{font:800 clamp(25px,7vw,45px) Orbitron;color:var(--g);letter-spacing:3px}.clock .meta{margin-top:5px;color:#9ad9aa;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:linear-gradient(145deg,#071009,#030603);border:1px solid var(--line);padding:20px;box-shadow:0 0 24px #00ff6608;position:relative}.card:before{content:"//";position:absolute;right:12px;top:8px;color:#0d5228;font-weight:bold}
+.card h2{font:700 18px Orbitron;margin:0 0 7px;color:var(--g);letter-spacing:1px}.desc{font-size:11px;color:#77a884;margin-bottom:16px}
+input{width:100%;background:#010301;color:#d9ffe4;border:1px solid #1d6333;padding:13px 12px;outline:none;font:14px "Share Tech Mono";border-radius:2px}input:focus{border-color:var(--g);box-shadow:0 0 12px #00ff6622}
+.row{display:flex;gap:8px;margin-top:10px}.btn{flex:1;border:1px solid var(--g);background:#031007;color:var(--g);padding:12px 10px;font:700 12px Orbitron;cursor:pointer;text-transform:uppercase}.btn:hover{background:#00ff6614;box-shadow:0 0 15px #00ff6630}.btn:disabled{opacity:.45;cursor:wait}
+.status{min-height:20px;margin-top:12px;font-size:11px;color:#7be697}.status.err{color:var(--danger)}.result{display:none;margin-top:13px;padding:11px;border-left:2px solid var(--g);background:#020702;font-size:11px}.result a{color:var(--g);word-break:break-all}
+footer{text-align:center;margin-top:30px;color:#477b54;font-size:10px;letter-spacing:1px}footer strong{color:#9cffb5}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.wrap{padding-top:18px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+  <div class="avatar"><img id="avatar" src="https://i.ibb.co/Z6fRVZmh/IMG-20261004-WA0057.png" alt="Hacker King" onerror="this.src='https://dummyimage.com/300x300/020702/00ff66&text=HK'"></div>
+  <h1>HACKER KING</h1>
+  <div class="sub">MEDIA DOWNLOADER // ONLINE TOOL</div>
+</header>
+
+<section class="clock" aria-live="polite">
+  <div class="time" id="clock">--:--:--</div>
+  <div class="meta" id="date">KARACHI // LOADING TIME...</div>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <h2>YOUTUBE // AUDIO</h2><div class="desc">MP3 downloader with automatic API fallback.</div>
+    <input id="ytmp3" placeholder="Paste YouTube link..." autocomplete="off">
+    <div class="row"><button class="btn" onclick="downloadYT('mp3')">DOWNLOAD MP3</button></div>
+    <div class="status" id="ytmp3-status"></div><div class="result" id="ytmp3-result"></div>
+  </article>
+
+  <article class="card">
+    <h2>YOUTUBE // VIDEO</h2><div class="desc">MP4 downloader with automatic API fallback.</div>
+    <input id="ytmp4" placeholder="Paste YouTube link..." autocomplete="off">
+    <div class="row"><button class="btn" onclick="downloadYT('mp4')">DOWNLOAD MP4</button></div>
+    <div class="status" id="ytmp4-status"></div><div class="result" id="ytmp4-result"></div>
+  </article>
+
+  <article class="card">
+    <h2>FACEBOOK // VIDEO</h2><div class="desc">Public Facebook / FB Watch video downloader.</div>
+    <input id="fb" placeholder="Paste Facebook link..." autocomplete="off">
+    <div class="row"><button class="btn" onclick="downloadFB()">DOWNLOAD</button></div>
+    <div class="status" id="fb-status"></div><div class="result" id="fb-result"></div>
+  </article>
+
+  <article class="card">
+    <h2>X / TWITTER // VIDEO</h2><div class="desc">Public X/Twitter video downloader.</div>
+    <input id="x" placeholder="Paste X / Twitter link..." autocomplete="off">
+    <div class="row"><button class="btn" onclick="downloadX()">DOWNLOAD</button></div>
+    <div class="status" id="x-status"></div><div class="result" id="x-result"></div>
+  </article>
+</section>
+
+<footer>CREATED BY <strong>MUHAMMAD JAMEER // HACKER KING</strong></footer>
+</main>
+
+<script>
+const API={
+  yt3:[
+    u=>`https://eliteprotech-apis.zone.id/ytdown?url=${encodeURIComponent(u)}&format=mp3`,
+    u=>`https://api.yupra.my.id/api/downloader/ytmp3?url=${encodeURIComponent(u)}`,
+    u=>`https://okatsu-rolezapiiz.vercel.app/downloader/ytmp3?url=${encodeURIComponent(u)}`
+  ],
+  yt4:[
+    u=>`https://eliteprotech-apis.zone.id/ytdown?url=${encodeURIComponent(u)}&format=mp4`,
+    u=>`https://api.yupra.my.id/api/downloader/ytmp4?url=${encodeURIComponent(u)}`,
+    u=>`https://okatsu-rolezapiiz.vercel.app/downloader/ytmp4?url=${encodeURIComponent(u)}`
+  ],
+  fb:u=>`https://tele-social.vercel.app/down?url=${encodeURIComponent(u)}`,
+  x:u=>`https://apis.davidcyriltech.my.id/download/twitter?url=${encodeURIComponent(u)}`
+};
+
+function setStatus(id,msg,err=false){const e=document.getElementById(id);e.textContent=msg;e.className='status'+(err?' err':'')}
+function showResult(id,title,url){const e=document.getElementById(id);e.style.display='block';e.innerHTML=`<b>${escapeHtml(title||'READY')}</b><br><br><a href="${escapeAttr(url)}" target="_blank" rel="noopener">OPEN DOWNLOAD LINK ↗</a>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function escapeAttr(s){return String(s).replace(/"/g,'&quot;')}
+
+async function getJSON(url){
+ const r=await fetch(url,{method:'GET',headers:{'Accept':'application/json,text/plain,*/*'}});
+ if(!r.ok) throw new Error('HTTP '+r.status);
+ return await r.json();
+}
+function validHost(url,hosts){try{const h=new URL(url).hostname.toLowerCase();return hosts.some(x=>h===x||h.endsWith('.'+x))}catch{return false}}
+
+async function downloadYT(kind){
+ const input=document.getElementById(kind==='mp3'?'ytmp3':'ytmp4').value.trim(), sid=kind==='mp3'?'ytmp3':'ytmp4';
+ document.getElementById(sid+'-result').style.display='none';
+ if(!validHost(input,['youtube.com','youtu.be','youtube-nocookie.com'])) return setStatus(sid+'-status','INVALID YOUTUBE LINK',true);
+ setStatus(sid+'-status','CONNECTING TO FALLBACK SERVERS...');
+ const list=kind==='mp3'?API.yt3:API.yt4;
+ for(let i=0;i<list.length;i++){
+  try{
+   setStatus(sid+'-status',`TRYING SERVER ${i+1}/${list.length}...`);
+   const d=await getJSON(list[i](input));
+   let out=null;
+   if(d?.success&&d.downloadURL) out={url:d.downloadURL,title:d.title};
+   else if(d?.success&&d.data?.download_url) out={url:d.data.download_url,title:d.data.title};
+   else if(d?.result?.[kind]) out={url:d.result[kind],title:d.result.title};
+   if(out?.url){setStatus(sid+'-status','✓ READY');showResult(sid+'-result',out.title||'DOWNLOAD READY',out.url);return;}
+  }catch(e){}
+ }
+ setStatus(sid+'-status','ALL SERVERS FAILED — this may be a CORS/API outage.',true);
+}
+
+async function downloadFB(){
+ const input=document.getElementById('fb').value.trim();document.getElementById('fb-result').style.display='none';
+ if(!validHost(input,['facebook.com','fb.watch'])) return setStatus('fb-status','INVALID FACEBOOK LINK',true);
+ setStatus('fb-status','CONNECTING...');
+ try{const d=await getJSON(API.fb(input));const m=d?.data?.media||{};const u=m.download||m.video;if(d?.status&&u){setStatus('fb-status','✓ READY');showResult('fb-result','FACEBOOK VIDEO READY',u);return}}catch(e){}
+ setStatus('fb-status','FAILED — API may be unavailable or blocked by browser CORS.',true);
+}
+
+async function downloadX(){
+ const input=document.getElementById('x').value.trim();document.getElementById('x-result').style.display='none';
+ if(!validHost(input,['twitter.com','x.com'])) return setStatus('x-status','INVALID X / TWITTER LINK',true);
+ setStatus('x-status','CONNECTING...');
+ try{const d=await getJSON(API.x(input));const u=d?.result?.video_url;if(u){setStatus('x-status','✓ READY');showResult('x-result','X VIDEO READY',u);return}}catch(e){}
+ setStatus('x-status','FAILED — API may be unavailable or blocked by browser CORS.',true);
+}
+
+// Time: API first, then a local ticking clock if the service is down.
+let serverOffset=0;
+function localKarachi(){
+ const now=new Date(Date.now()+serverOffset);
+ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Karachi',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
+}
+function localDate(){
+ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Karachi',weekday:'short',day:'2-digit',month:'short',year:'numeric'}).format(new Date(Date.now()+serverOffset)).toUpperCase();
+}
+function renderClock(){document.getElementById('clock').textContent=localKarachi();document.getElementById('date').textContent='KARACHI // '+localDate()}
+async function syncTime(){
+ try{
+  const r=await fetch('https://worldtime.timezone.io/api/timezone/Asia/Karachi',{cache:'no-store'});
+  if(!r.ok) throw 0; const d=await r.json();
+  const remote=d.datetime||d.dateTime||d.currentDateTime||d.utc_datetime;
+  if(remote){serverOffset=new Date(remote).getTime()-Date.now();document.getElementById('date').textContent='KARACHI // API SYNCED';}
+ }catch(e){document.getElementById('date').textContent='KARACHI // LOCAL FALLBACK ACTIVE';}
+ renderClock();
+}
+renderClock();syncTime();setInterval(renderClock,1000);setInterval(syncTime,60000);
+</script>
+</body>
+</html>
+  
